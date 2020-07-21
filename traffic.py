@@ -48,14 +48,14 @@ def load_data(data_dir):
     """
     Load image data from directory `data_dir`.
 
-    Assume `data_dir` has one directory named after each category, numbered
+    Function assumes `data_dir` has one directory named after each category, numbered
     0 through NUM_CATEGORIES - 1. Inside each category directory will be some
     number of image files.
 
     Return tuple `(images, labels)`. `images` should be a list of all
     of the images in the data directory, where each image is formatted as a
-    numpy ndarray with dimensions IMG_WIDTH x IMG_HEIGHT x 3. `labels` should
-    be a list of integer labels, representing the categories for each of the
+    numpy ndarray with dimensions IMG_WIDTH x IMG_HEIGHT x 3. `labels` is
+    a list of integer labels, representing the categories for each of the
     corresponding `images`.
     """
     data_dir = os.path.join(os.getcwd(),data_dir)
@@ -75,15 +75,17 @@ def load_data(data_dir):
 
 def get_model():
     """
-    Returns a compiled convolutional neural network model. Assume that the
+    Returns a compiled convolutional neural network model. It assumes that the
     `input_shape` of the first layer is `(IMG_WIDTH, IMG_HEIGHT, 3)`.
     The output layer should have `NUM_CATEGORIES` units, one for each category.
     """
     model = models.Sequential()
-
+    
+    # convolution layers to extract important features like edges and shape of the sign
     model.add(layers.Conv2D(128,(3,3),activation="relu",input_shape=(IMG_HEIGHT,IMG_WIDTH,3)))
-
     model.add(layers.Conv2D(64,(3,3),activation="relu"))
+    
+    # Pooling ( taking maximum value from each image from all its 2x2 submatrices )to reduce the input size
     model.add(layers.MaxPooling2D((2,2)))
     model.add(layers.Flatten())
 
